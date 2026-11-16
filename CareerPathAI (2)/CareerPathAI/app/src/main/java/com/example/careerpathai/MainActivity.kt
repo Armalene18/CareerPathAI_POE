@@ -2706,147 +2706,155 @@ fun AssessmentHistoryScreen(
                 }
             },
 
+
             containerColor = if (darkMode) {
                 Color(0xFF1E293B)
             } else {
                 Color.White
             }
+        )
+    }
+}
 
-            @Composable
-            fun SkillGapScreen(
-                darkMode: Boolean,
-                onBack: () -> Unit
-            ) {
-                val colors = appColors(darkMode)
+// ============================================================
+// SKILL GAP ANALYSIS SCREEN
+// ============================================================
 
-                val requiredSkills = listOf(
-                    "Java",
-                    "SQL",
-                    "HTML & CSS",
-                    "JavaScript",
-                    "Git & GitHub",
-                    "Problem Solving"
+@Composable
+fun SkillGapScreen(
+    darkMode: Boolean,
+    onBack: () -> Unit
+) {
+    val colors = appColors(darkMode)
+
+    val requiredSkills = listOf(
+        "Java",
+        "SQL",
+        "HTML & CSS",
+        "JavaScript",
+        "Git & GitHub",
+        "Problem Solving"
+    )
+
+    var selectedSkills by remember {
+        mutableStateOf(setOf("Java", "SQL"))
+    }
+
+    val percentage =
+        (selectedSkills.size * 100) / requiredSkills.size
+
+    AppPage(darkMode) {
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
+        ) {
+
+            TextButton(onClick = onBack) {
+                Text("← Back to Dashboard")
+            }
+
+            Text(
+                text = "Skill-Gap Analysis",
+                fontSize = 25.sp,
+                fontWeight = FontWeight.Bold,
+                color = colors.title
+            )
+
+            Text(
+                text = "Identify your existing skills and discover what you need to improve.",
+                color = colors.secondary
+            )
+
+            Card(
+                colors = CardDefaults.cardColors(
+                    containerColor = colors.surface
                 )
+            ) {
+                Column(
+                    modifier = Modifier.padding(20.dp)
+                ) {
+                    Text(
+                        text = "Career Readiness",
+                        fontWeight = FontWeight.Bold,
+                        color = colors.title
+                    )
 
-                var selectedSkills by remember {
-                    mutableStateOf(setOf("Java", "SQL"))
+                    Text(
+                        text = "$percentage%",
+                        fontSize = 32.sp,
+                        fontWeight = FontWeight.ExtraBold,
+                        color = CareerBlue
+                    )
+
+                    LinearProgressIndicator(
+                        progress = percentage / 100f,
+                        modifier = Modifier.fillMaxWidth(),
+                        color = CareerGreen
+                    )
+
+                    Text(
+                        text = "Based on your selected skills",
+                        color = colors.secondary
+                    )
                 }
+            }
 
-                val percentage =
-                    (selectedSkills.size * 100) / requiredSkills.size
+            Text(
+                text = "Select the skills you currently have:",
+                fontWeight = FontWeight.Bold,
+                color = colors.title
+            )
 
-                AppPage(darkMode) {
+            requiredSkills.forEach { skill ->
 
-                    Column(
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = colors.surface
+                    )
+                ) {
+                    Row(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                            .fillMaxWidth()
+                            .padding(12.dp),
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-
-                        TextButton(onClick = onBack) {
-                            Text("← Back to Dashboard")
-                        }
-
-                        Text(
-                            text = "Skill-Gap Analysis",
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = colors.title
-                        )
-
-                        Text(
-                            text = "Identify your existing skills and discover what you need to improve.",
-                            color = colors.secondary
-                        )
-
-                        Card(
-                            colors = CardDefaults.cardColors(
-                                containerColor = colors.surface
-                            )
-                        ) {
-                            Column(
-                                modifier = Modifier.padding(20.dp)
-                            ) {
-                                Text(
-                                    text = "Career Readiness",
-                                    fontWeight = FontWeight.Bold,
-                                    color = colors.title
-                                )
-
-                                Text(
-                                    text = "$percentage%",
-                                    fontSize = 32.sp,
-                                    fontWeight = FontWeight.ExtraBold,
-                                    color = CareerBlue
-                                )
-
-                                LinearProgressIndicator(
-                                    progress = percentage / 100f,
-                                    modifier = Modifier.fillMaxWidth(),
-                                    color = CareerGreen
-                                )
-
-                                Text(
-                                    text = "Based on your selected skills",
-                                    color = colors.secondary
-                                )
+                        Checkbox(
+                            checked = skill in selectedSkills,
+                            onCheckedChange = { checked ->
+                                selectedSkills =
+                                    if (checked) {
+                                        selectedSkills + skill
+                                    } else {
+                                        selectedSkills - skill
+                                    }
                             }
-                        }
-
-                        Text(
-                            text = "Select the skills you currently have:",
-                            fontWeight = FontWeight.Bold,
-                            color = colors.title
                         )
 
-                        requiredSkills.forEach { skill ->
-
-                            Card(
-                                colors = CardDefaults.cardColors(
-                                    containerColor = colors.surface
-                                )
-                            ) {
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(12.dp),
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Checkbox(
-                                        checked = skill in selectedSkills,
-                                        onCheckedChange = { checked ->
-                                            selectedSkills =
-                                                if (checked) {
-                                                    selectedSkills + skill
-                                                } else {
-                                                    selectedSkills - skill
-                                                }
-                                        }
-                                    )
-
-                                    Text(
-                                        text = skill,
-                                        color = colors.text
-                                    )
-                                }
-                            }
-                        }
-
                         Text(
-                            text = "Skills to improve:",
-                            fontWeight = FontWeight.Bold,
-                            color = colors.title
+                            text = skill,
+                            color = colors.text
                         )
-
-                        requiredSkills
-                            .filterNot { it in selectedSkills }
-                            .forEach { skill ->
-                                Text(
-                                    text = "• $skill",
-                                    color = CareerRed
-                                )
-                            }
                     }
                 }
             }
+
+            Text(
+                text = "Skills to improve:",
+                fontWeight = FontWeight.Bold,
+                color = colors.title
+            )
+
+            requiredSkills
+                .filterNot { it in selectedSkills }
+                .forEach { skill ->
+                    Text(
+                        text = "• $skill",
+                        color = CareerRed
+                    )
+                }
+        }
+    }
+}
