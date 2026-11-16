@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "966973488346",
+    "project_id": "careerpathai-53055",
+    "storage_bucket": "careerpathai-53055.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:966973488346:android:135f94bc0fabec266eb9e3",
+        "android_client_info": {
+          "package_name": "com.example.careerpathai"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEHB_Pkm03URLB9kvWhPNbFkM9Pagw8fo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
